@@ -104,7 +104,7 @@ The metrology is a list composed of `Counter` objects like:
 }
 ```
 
-<p align="left"><img width="400px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/graphics.png"></p>
+<p align="left"><img width="900px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/graphics.png"></p>
 
 ### How adapt it to your home?
 
@@ -141,10 +141,13 @@ But, courage, if you know some things in Python, it shouldn't be too hard. I tri
 
 Nothing to change in the neural network part, if the linker's file is correct the learning will be correct too, don't worry ;)
 
-### Concept & Conception
+### Conception
 
 <p align="center"><img src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/class_diagram.png"></p>
 The above diagram was modeled with <a rel="staruml" href="http://staruml.io/">StarUML</a>.
 
+
 ### Dependencies
+
+
 
