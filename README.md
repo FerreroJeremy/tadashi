@@ -59,7 +59,7 @@ And on the other hand, a list of `Room` objects (aggregated device/sensor data b
 After, a map of the home is built from the `TadashiHistory`, i.e. the list of the `Room` objects, with mapdrawing classes knowing the location of walls and sensors.
 
 To charm you, I put below an example of generated map from sensor states:
-<p align="center"><img src="https://raw.githubusercontent.com/FerreroJeremy/tadashi/master/doc/map.png"></p>
+<p align="center"><img width="300px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/map.png"></p>
 
 You can see in the lower left corner a further feature, the context.
 The context will be the activity do by the customer or the meta-state of the home, e.g. travelling, cooking, sleeping... and it will be useful to supply an additional information to the neural network.
@@ -75,6 +75,11 @@ This postulate can be easily improved further, e.g. multi-label classification.
 Once the mapping list built by Linker we can use it to feed a neural network and learn a model.
 Like that, when the home is in a certain context/state, the neural network can predict a command to execute.
 The command is then executed through a Fibaro API call.
+
+The deep learning library uses is <a rel="keras" href="https://keras.io/">Keras</a>.
+
+After the training, a graph is generated showing the loss and accuracy of the training.
+<p align="center"><img width="500px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/learning.png"></p>
 
 The learning is not carried out at each passage of the script, unlike the mapping and linking.
 By default, it is done every 3 days after 3a.m.
@@ -98,6 +103,8 @@ The metrology is a list composed of `Counter` objects like:
     "corrected": 4
 }
 ```
+
+<p align="left"><img width="400px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/graphics.png"></p>
 
 ### How adapt it to your home?
 
@@ -136,7 +143,7 @@ Nothing to change in the neural network part, if the linker's file is correct th
 
 ### Concept & Conception
 
-<p align="center"><img src="https://raw.githubusercontent.com/FerreroJeremy/tadashi/master/doc/class_diagram.png"></p>
+<p align="center"><img src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/class_diagram.png"></p>
 The above diagram was modeled with <a rel="staruml" href="http://staruml.io/">StarUML</a>.
 
 ### Dependencies
