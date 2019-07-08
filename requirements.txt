@@ -1,0 +1,12 @@
+pytz==2018.9
+pandas==0.24.2
+imutils==0.5.2
+svgwrite==1.2.1
+numpy==1.16.4
+astral==1.10.1
+seaborn==0.9.0
+matplotlib==3.1.0
+Keras==2.2.4
+tensorflow=1.14
+fontawesome==5.7.2.post1
+scikit_learn==0.21.2
