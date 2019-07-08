@@ -26,6 +26,8 @@ If you understand French and if you are really interested by his work, I recomme
 
 #### Fibaro sensors
 
+This assume that your home automation system -provider- is <a rel="fibaro" href="https://www.fibaro.com">Fibaro</a>.
+
 Firstly, a call to <a rel="fibaro_api" href="https://manuals.fibaro.com/knowledge-base-browse/rest-api/">Fibaro API</a> is carried out to ensure the gathering of all data about the sensors.
 Then, the collected data are refactored in more human friendly python objects, more exactly a `History` and a `TadashiHistory` object.
 Respectively, on the one hand, a list of `Device` objects, like:
@@ -73,7 +75,7 @@ The context will be the activity do by the customer or the meta-state of the hom
 #### Linker
 
 At every passage of the script, the `Linker` compute the new action -new activated switch according sensors- and link it with the previous generated map (the map generated in the previous passage) to feed the neural network.
-Starting from the premise that in a home state n-1 we want to automaticlly execute the command that led to the state n.
+Starting from the premise that in a home state *n-1* we want to automaticlly execute the command that led to the state *n*.
 This postulate can be easily further improved, e.g. multi-label classification.
 
 #### Deep learning
@@ -126,13 +128,13 @@ You can change it in `tadashi.py`.
 
 2. **Change the Map generation**
 There is a good chance that your house is not architecturally identical to mine.
-You will have to make some changes to make Tadashi work with your home.
+So, you will have to make some changes to make Tadashi work with your home.
 
     1. **Change a room**
 You will have to redefine the walls and the sensor locations.
 For this, you will have to directly modify the methods called in `*MapDrawer` classes.
 For exemple, if you want to redefine the bathroom, you must play with the `BathroomMapDrawer` class.
-Change the `(x, y)` tuple and `width` and the `height` of the figure in the `draw_room_wall` method to change size and location of the walls.
+Change the `(x, y)` tuple and the `width` and the `height` of the figure in the `draw_room_wall` method to change size and location of the walls.
 Look at the <a rel="svgwrite" href="https://svgwrite.readthedocs.io/en/master/">svgwrite documentation</a> to learn how manipulate native svgwrite methods like `Rect` or `Line`.
 For the sensors is easier, just change the `x` and `y` parameter of the `draw_*_icon` methods to change the location of the corresponding sensor.
 Try it! It's cool, it's like drawing!
