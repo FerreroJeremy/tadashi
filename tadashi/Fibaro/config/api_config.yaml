@@ -1,0 +1,4 @@
+fibaro:
+  ip : "192.168.1.66"
+  user : "your_login_here"
+  password : "p455w0rd"

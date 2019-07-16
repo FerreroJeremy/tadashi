@@ -24,19 +24,24 @@ If you understand French and if you are really interested by his work, I recomme
 
 <p align="center"><img src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/component_diagram.png"></p>
 
-#### Fibaro sensors
+When executed, the script launch a `PeriodicallyProcessor` that runs every `TIME_BETWEEN_TWO_PROCESS` seconds (5 seconds by default).
+The course of the proceedings is explain in more detail below.
 
 This assume that your home automation system -provider- is <a rel="fibaro" href="https://www.fibaro.com">Fibaro</a>.
 
+#### Fibaro sensors
+
 Firstly, a call to <a rel="fibaro_api" href="https://manuals.fibaro.com/knowledge-base-browse/rest-api/">Fibaro API</a> is carried out to ensure the gathering of all data about the sensors.
+The auth info are in a config `yaml` file in the `config` folder of Fibaro module.
+
 Then, the collected data are refactored in more human friendly python objects, more exactly a `History` and a `TadashiHistory` object.
 Respectively, on the one hand, a list of `Device` objects, like:
 
 ```json
 {
-    "id": 1898,
-    "name": "1897.0",
-    "roomID": 0,
+    "id": 12,
+    "name": "lounge_motion_sensor",
+    "roomID": 1,
     "type": "com.fibaro.FGMS001",
     "baseType": "com.fibaro.motionSensor",
     "value": "true",
@@ -46,42 +51,43 @@ Respectively, on the one hand, a list of `Device` objects, like:
 }
 ```
 
-And on the other hand, a list of `Room` objects (aggregated device/sensor data by rooom):
+And on the other hand, a list of `Room` objects (aggregated device/sensor data by room):
 
 ```json
 {
-    "place": 0,
-    "temperature": 2.0,
+    "place": 1,
+    "temperature": 22.8,
     "light": true,
     "motion": true,
-    "humidity": true,
-    "gaz": 2,
+    "humidity": false,
+    "gaz": 0,
     "door": 1,
     "shutter": 1,
-    "noise": true
+    "noise": false
 }
 ```
 
 #### Map drawing
 
-After, a map of the home is built from the `TadashiHistory`, i.e. the list of the `Room` objects, with mapdrawing classes knowing the location of walls and sensors.
+After, mapdrawing classes knowing the location of walls and sensors build a 256x256 pixel colorized SVG map of the home from the `TadashiHistory`, i.e. the list of the `Room` objects.
 
 To charm you, I put below an example of generated map from sensor states:
 <p align="center"><img width="300px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/map.png"></p>
 
 You can see in the lower left corner a future feature, the context.
 The context will be the activity do by the customer or the meta-state of the home, e.g. travelling, cooking, sleeping... and it will be useful to supply an additional information to the neural network.
+For now, the default context is set to `UNKNOWN` and does not appear on the map.
 
 #### Linker
 
-At every passage of the script, the `Linker` compute the new action -new activated switch according sensors- and link it with the previous generated map (the map generated in the previous passage) to feed the neural network.
+At every passage of the periodic process, the `Linker` compute the new action (new activated switch according sensors) and link it with the previous generated map (the map generated in the previous passage).
 Starting from the premise that in a home state *n-1* we want to automaticlly execute the command that led to the state *n*.
-This postulate can be easily further improved, e.g. multi-label classification.
+This postulate can be easily further improved, e.g. with multi-label classification.
 
 #### Deep learning
 
-Once the mapping [switch to activate - map] list built by `Linker` we can use it to feed a convolutional neural network and learn a model.
-Like that, when the home is in a certain state, the neural network can predict a command to execute.
+Once the mapping `[switch to activate - map]` list built by `Linker`, we can use this list to feed a convolutional neural network and learn a model.
+In this way, when the home is in a certain state, the neural network can predict a command to execute.
 The command is finally executed through a Fibaro API call.
 
 The deep learning library uses is <a rel="keras" href="https://keras.io/">Keras</a>.
@@ -90,19 +96,19 @@ The convolutional network uses is the VGG, first introduced by <a rel="vgg" href
 After the model training, a graph is generated showing the loss and accuracy of the training.
 <p align="center"><img width="500px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/learning.png"></p>
 
-The learning is not carried out at each passage of the script, unlike the mapping, linking and classification process.
-By default, it is done every 3 days after 3a.m.
+The learning is not carried out at every passage of the periodic process, unlike the map, link and classification processing.
+By default, it is done every 3 days after 3 a.m.
 You can change this in `tadashi.py`.
-I invite you to take a look in `periodicallyProcessor.py` too.
+I invite you to take a look in `LockManager` too.
 
 #### Monitoring
 
-The monitoring module compute some alerting (e.g. the list of the devices with no more battery) and metrology (e.g. graphs with the most used sensors).
-The metrology is a list composed of `Counter` objects, like:
+The monitoring module compute some alerting (e.g. the list of the devices with no more battery) and metrology (e.g. graphs with the most used and corrected sensors).
+The metrology is a list of `Counter` objects, like:
 
 ```json
 {
-    "id": 2004,
+    "id": 12,
     "roomID": 1,
     "type": "com.fibaro.FGMS001",
     "baseType": "com.fibaro.motionSensor",
@@ -112,8 +118,8 @@ The metrology is a list composed of `Counter` objects, like:
 }
 ```
 
-The monitoring module compute also a graph with the most corrected predictions and the confusion matrice of predictions.
-This can be used later to integrate reinforcement learning in the convolutional neural network as in <a rel="hal" href="https://hal.archives-ouvertes.fr/hal-01829401">ARCADES</a>.
+The monitoring module also compute a graph with the most corrected predictions and the <a rel="matrix" href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> of predictions.
+This can be used later to integrate <a rel="reinforcement_learning" href="https://en.wikipedia.org/wiki/Reinforcement_learning">reinforcement learning</a> in the convolutional neural network as in <a rel="hal" href="https://hal.archives-ouvertes.fr/hal-01829401">ARCADES</a>.
 
 <p align="center"><img width="900px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/graphics.png"></p>
 
@@ -136,16 +142,22 @@ For this, you will have to directly modify the methods called in `*MapDrawer` cl
 For exemple, if you want to redefine the bathroom, you must play with the `BathroomMapDrawer` class.
 Change the `(x, y)` tuple and the `width` and the `height` of the figure in the `draw_room_wall` method to change size and location of the walls.
 Look at the <a rel="svgwrite" href="https://svgwrite.readthedocs.io/en/master/">svgwrite documentation</a> to learn how manipulate native svgwrite methods like `Rect` or `Line`.
-For the sensors is easier, just change the `x` and `y` parameter of the `draw_*_icon` methods to change the location of the corresponding sensor.
-Try it! It's cool, it's like drawing!
+For the sensors is easier, just change the `x` and `y` parameters of `draw_*_icon` methods in `draw_*_sensor` methods to change the location of the corresponding sensor.
 
     2. **Add a room**
 Add a class corresponding to your room that inherits the parent `MapDrawer` class.
 Override each of the necessary methods as do the other `*MapDrawer` classes (e.g. `LoungeMapDrawer`).
 Override the `draw_room_wall` method to define the walls of the room, the `draw_*_sensor` methods to add sensors in the room, and so on.
+Furthermore, when you add a room, you must define it into `Place` enum in the `room.py` model class.
 
-3. **Add a sensor and other bigger changes**
-Normally, if you use Fibaro in your smart home, the script is now ready and adapted to your home.
+    3. **Add a sensor**
+Add a `draw_(your_sensor_name)_icon` method in the parent `MapDrawer` class.
+And add a `draw_(your_sensor_name)_sensor` method in each `*MapDrawer` child classes where you want to include your new sensor.
+Use the already existing `draw_*_icon` and `draw_*_sensor` methods to code the core of your methods and take a look at the <a rel="fa" href="https://pypi.org/project/fontawesome/">fontawesome library documentation</a> to choose the icon for your new sensor.
+Furthermore, when you add a sensor, you must define it into `Sensor` enum in the `fibaroSnapshotManager.py` class.
+
+3. **Other bigger changes**
+Normally, if you use Fibaro in your smart home, the project is now ready and adapted to your home.
 But, if you use another sensor provider, you should definitely refactor the whole `Fibaro` module and maybe modify the `Device` and `Room` objects too.
 But, courage, if you know some things in Python, it shouldn't be too hard. I tried my best to do POO minimalist pythonic clean code.
 
@@ -164,16 +176,15 @@ The classes imported from the Python Standard Library do not appear in the diagr
 
 The list of the current dependencies can be found in the `requirements.txt` file, and is also available below.
 
+- matplotlib==3.1.0
 - pytz==2018.9
 - pandas==0.24.2
-- imutils==0.5.2
-- svgwrite==1.2.1
-- numpy==1.16.4
 - astral==1.10.1
+- numpy==1.16.4
+- requests==2.21.0
+- svgwrite==1.2.1
 - seaborn==0.9.0
-- matplotlib==3.1.0
-- Keras==2.2.4
-- tensorflow=1.14
 - fontawesome==5.7.2.post1
-- scikit_learn==0.21.2
+- PyYAML==5.1.1
+
 
