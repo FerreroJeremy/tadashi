@@ -1,12 +1,15 @@
 # Tadashi
 
-Tadashi is a context-aware deep decision system for smart home.
+**Tadashi is a context-aware deep decision system for smart home.**
+
+The project is currently in beta.
+Pull requests, feedbacks and suggestions are welcome!
 
 ### What is it?
 
 This project is closely modelled on the <a rel="arcades" href="https://gricad-gitlab.univ-grenoble-alpes.fr/brenona/arcades">ARCADES</a> project of my former colleague <a rel="alexis" href="https://github.com/AlexisBRENON">Alexis Brenon</a>.
 I invite you to read the <a rel="hal" href="https://hal.archives-ouvertes.fr/hal-01829401">ARCADES paper</a>.
-Please cite this paper if you use Tadashi.
+Please cite this paper if you need to refer to Tadashi.
 
 If you understand French and if you are really interested by his work, I recommend you to read his <a rel="thesis" href="https://tel.archives-ouvertes.fr/tel-01818123">thesis</a>.
 
@@ -81,25 +84,18 @@ For now, the default context is set to `UNKNOWN` and does not appear on the map.
 #### Linker
 
 At every passage of the periodic process, the `Linker` compute the new action (new activated switch according sensors) and link it with the previous generated map (the map generated in the previous passage).
-Starting from the premise that in a home state *n-1* we want to automaticlly execute the command that led to the state *n*.
+To perform that it compute the difference between the state *n* and the state *n-1* of the home.
+A filter is provided to remove the switch/dimmer/controller to exclude of the prediction system.
+You can only take into account some devices, by using the value of the `Sensor` enum in the `fibaroSnapshotManager.py` class.
+By default, all the actuator device are take into account for prediction, and not the sensor devices.
+
+This approach is based on the premise that in a home state *n-1* we want to automaticlly execute the command that led to the state *n*.
 This postulate can be easily further improved, e.g. with multi-label classification.
 
-#### Deep learning
+#### Prediction
 
-Once the mapping `[switch to activate - map]` list built by `Linker`, we can use this list to feed a convolutional neural network and learn a model.
-In this way, when the home is in a certain state, the neural network can predict a command to execute.
-The command is finally executed through a Fibaro API call.
-
-The deep learning library uses is <a rel="keras" href="https://keras.io/">Keras</a>.
-The convolutional network uses is the VGG, first introduced by <a rel="vgg" href="https://arxiv.org/pdf/1409.1556/">Simonyan and Zisserman (2014)</a> which was subsequently used in many projects winning numerous challenges in image recognition task.
-
-After the model training, a graph is generated showing the loss and accuracy of the training.
-<p align="center"><img width="500px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/learning.png"></p>
-
-The learning is not carried out at every passage of the periodic process, unlike the map, link and classification processing.
-By default, it is done every 3 days after 3 a.m.
-You can change this in `tadashi.py`.
-I invite you to take a look in `LockManager` too.
+Thanks to a neural network (see below), the switch/dimmer/controller to (de)activate is predicted for a certain home state.
+The corresponding command is finally executed through a Fibaro API call.
 
 #### Monitoring
 
@@ -122,6 +118,22 @@ The monitoring module also compute a graph with the most corrected predictions a
 This can be used later to integrate <a rel="reinforcement_learning" href="https://en.wikipedia.org/wiki/Reinforcement_learning">reinforcement learning</a> in the convolutional neural network as in <a rel="hal" href="https://hal.archives-ouvertes.fr/hal-01829401">ARCADES</a>.
 
 <p align="center"><img width="900px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/graphics.png"></p>
+
+#### Deep learning
+
+Once the mapping `[switch to activate - map]` list built by `Linker`, we can use this list to feed a convolutional neural network and learn a model.
+In this way, when the home is in a certain state, the neural network can predict a command to execute.
+
+The deep learning library uses is <a rel="keras" href="https://keras.io/">Keras</a>.
+The convolutional network uses is the VGG, first introduced by <a rel="vgg" href="https://arxiv.org/pdf/1409.1556/">Simonyan and Zisserman (2014)</a> which was subsequently used in many projects winning numerous challenges in image recognition task.
+
+After the model training, a graph is generated showing the loss and accuracy of the training.
+<p align="center"><img width="500px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/learning.png"></p>
+
+Since the learning may take some time and doesn't have to be done frequently, it is not carried out at every passage of the periodic process, unlike the map, link and classification processing. 
+It is performed independently by the script `train_network.py`.
+If you want to do the learning automatically, you can change this in `tadashi.py`.
+I invite you to take a look in `LockManager` too.
 
 ### How adapt it to your home?
 
@@ -176,15 +188,15 @@ The classes imported from the Python Standard Library do not appear in the diagr
 
 The list of the current dependencies can be found in the `requirements.txt` file, and is also available below.
 
-- matplotlib==3.1.0
-- pytz==2018.9
-- pandas==0.24.2
-- astral==1.10.1
-- numpy==1.16.4
-- requests==2.21.0
-- svgwrite==1.2.1
-- seaborn==0.9.0
-- fontawesome==5.7.2.post1
-- PyYAML==5.1.1
+- matplotlib 3.1.0
+- pytz 2018.9
+- pandas 0.24.2
+- astral 1.10.1
+- numpy 1.16.4
+- requests 2.21.0
+- svgwrite 1.2.1
+- seaborn 0.9.0
+- fontawesome 5.7.2.post1
+- PyYAML 5.1.1
 
 
