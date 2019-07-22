@@ -20,6 +20,7 @@ class Place(Enum):
     BATHROOM = 3
     OUTSIDE = 4
 
+
 class Room:
     def __init__(
             self,
@@ -36,24 +37,24 @@ class Room:
     ):
         if not isinstance(place, Place):
             raise BadArgumentTypeException('place must be an instance of Place Enum')
-        
+
         if not isinstance(light, bool):
             raise BadArgumentTypeException('light must be a bool')
-        
+
         if not isinstance(temperature, float):
             self._temperature = None
         else:
             self._temperature = temperature
-        
+
         if not isinstance(motion, bool):
             raise BadArgumentTypeException('motion must be a bool')
-        
+
         if not isinstance(humidity, bool):
             raise BadArgumentTypeException('humidity must be a bool')
-        
+
         if not isinstance(noise, bool):
             raise BadArgumentTypeException('noise must be a bool')
-        
+
         if not isinstance(vaccum, bool):
             raise BadArgumentTypeException('vaccum must be a bool')
 
@@ -112,7 +113,7 @@ class Room:
     def place(self, place):
         if isinstance(place, int):
             place = Place(place)
-        
+
         if not isinstance(place, Place):
             raise BadArgumentTypeException('place must be an instance of Place Enum')
         self._place = place
@@ -196,4 +197,3 @@ class Room:
         self.shutter = dict_object['shutter']
         self.noise = dict_object['noise']
         self.vaccum = dict_object['vaccum']
-

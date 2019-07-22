@@ -39,13 +39,13 @@ class MapDrawer:
 
     def draw_date(self, handle, x=178, y=246, size='15', color='black'):
         date = datetime.datetime.now().strftime('%H:%M:%S')
-        utc=pytz.UTC
+        utc = pytz.UTC
         icon = fa.icons["moon"]
         sun = self._astral.sun(date=datetime.datetime.now(), local=True)
-        
-        if (sun['sunrise'].replace(tzinfo=utc) < datetime.datetime.now().replace(tzinfo=utc) < sun['sunset'].replace(tzinfo=utc)):
+
+        if sun['sunrise'].replace(tzinfo=utc) < datetime.datetime.now().replace(tzinfo=utc) < sun['sunset'].replace(tzinfo=utc):
             icon = fa.icons["sun"]
-        
+
         text = date + "  " + icon
         handle = self.draw_text(handle, text, x, y, size, color)
         return handle
@@ -121,15 +121,13 @@ class MapDrawer:
         return handle
 
     def draw_icon(self, handle, icon, x, y, size='15', color='black'):
-        handle.add(handle.text(fa.icons[icon], insert = (x, y), fill=color, font_size=size+'px'))
+        handle.add(handle.text(fa.icons[icon], insert=(x, y), fill=color, font_size=size+'px'))
         return handle
 
     def draw_text(self, handle, text, x, y, size='15', color='black'):
-        handle.add(handle.text(text, insert = (x, y), fill=color, font_size=size+'px'))
+        handle.add(handle.text(text, insert=(x, y), fill=color, font_size=size+'px'))
         return handle
 
-    def draw_door(self, handle, x1, y1, x2, y2, width = "2", color = "white"):
+    def draw_door(self, handle, x1, y1, x2, y2, width="2", color="white"):
         handle.add(handle.line((x1, y1), (x2, y2), stroke_width=width, stroke=color))
         return handle
-
-

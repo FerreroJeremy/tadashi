@@ -3,6 +3,7 @@ import os
 import time
 from .counter import Counter
 
+
 class Monitoring:
     def __init__(self, last_update=None, alerting=None, counters=None):
         if not last_update:
@@ -48,7 +49,7 @@ class Monitoring:
             outfile.write('\t"metrology" : [\n')
             for counter in self._metrology:
                 serialized_object = counter.serialize()
-                serialized_object = serialized_object.replace('_','')
+                serialized_object = serialized_object.replace('_', '')
                 outfile.write(serialized_object)
                 outfile.write(',\n')
             outfile.seek(outfile.tell() - 2, os.SEEK_SET)
@@ -63,8 +64,7 @@ class Monitoring:
                 self.last_update = monitoring['last_update']
                 for alert in monitoring['alerting']:
                     self.add_alert(alert)
-                for object in monitoring['metrology']:
+                for _object in monitoring['metrology']:
                     counter = Counter()
-                    counter.unserialize(object)
+                    counter.unserialize(_object)
                     self.add_counter(counter)
-

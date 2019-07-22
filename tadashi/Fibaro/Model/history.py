@@ -35,7 +35,7 @@ class History:
             outfile.write('\t"logs" : [\n')
             for log in self._logs:
                 serialized_object = log.serialize()
-                serialized_object = serialized_object.replace('_','')
+                serialized_object = serialized_object.replace('_', '')
                 outfile.write(serialized_object)
                 outfile.write(',\n')
             outfile.seek(outfile.tell() - 2, os.SEEK_SET)
@@ -47,8 +47,7 @@ class History:
         with open(path) as json_file:
             history = json.load(json_file)
             self.timestamp = history['timestamp']
-            for oject in history['logs']:
+            for _oject in history['logs']:
                 log = Device()
-                log.unserialize(oject)
+                log.unserialize(_oject)
                 self.add_log(log)
-

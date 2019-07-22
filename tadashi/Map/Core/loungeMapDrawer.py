@@ -1,18 +1,17 @@
-import svgwrite
 from .mapDrawer import MapDrawer
 
 
 class LoungeMapDrawer(MapDrawer):
 
     def draw_room_wall(self, handle):
-        handle.add(handle.rect((10, 10), ("70px", "46px"), stroke_width = "1", stroke = "white", fill = "white"))
-        handle.add(handle.rect((10, 56), ("157px", "97px"), stroke_width = "1", stroke = "white", fill = "white"))
-        handle.add(handle.line((10, 10), (81, 10), stroke_width = "2", stroke = "black"))
-        handle.add(handle.line((80, 10), (81, 56), stroke_width = "2", stroke = "black"))
-        handle.add(handle.line((80, 56), (169, 56), stroke_width = "2", stroke = "black"))
-        handle.add(handle.line((168, 56), (168, 155), stroke_width = "2", stroke = "black"))
-        handle.add(handle.line((168, 154), (9, 154), stroke_width = "2", stroke = "black"))
-        handle.add(handle.line((10, 154), (10, 9), stroke_width = "2", stroke = "black"))
+        handle.add(handle.rect((10, 10), ("70px", "46px"), stroke_width="1", stroke="white", fill="white"))
+        handle.add(handle.rect((10, 56), ("157px", "97px"), stroke_width="1", stroke="white", fill="white"))
+        handle.add(handle.line((10, 10), (81, 10), stroke_width="2", stroke="black"))
+        handle.add(handle.line((80, 10), (81, 56), stroke_width="2", stroke="black"))
+        handle.add(handle.line((80, 56), (169, 56), stroke_width="2", stroke="black"))
+        handle.add(handle.line((168, 56), (168, 155), stroke_width="2", stroke="black"))
+        handle.add(handle.line((168, 154), (9, 154), stroke_width="2", stroke="black"))
+        handle.add(handle.line((10, 154), (10, 9), stroke_width="2", stroke="black"))
         return handle
 
     def draw_door_sensor(self, handle):

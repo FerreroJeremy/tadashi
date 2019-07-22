@@ -1,4 +1,3 @@
-import svgwrite
 from .mapDrawer import MapDrawer
 
 

@@ -2,14 +2,14 @@ import json
 
 
 class Device:
-    def __init__(self, id=None, name=None, roomID=None, type=None, baseType=None, value=None, batteryLevel=None, dead=None, timestamp=None):
-        self._id = id
+    def __init__(self, _id=None, name=None, room_id=None, _type=None, base_type=None, value=None, battery_level=None, dead=None, timestamp=None):
+        self._id = _id
         self._name = name
-        self._roomID = roomID
-        self._type = type
-        self._baseType = baseType
+        self._roomID = room_id
+        self._type = _type
+        self._baseType = base_type
         self._value = value
-        self._batteryLevel = batteryLevel
+        self._batteryLevel = battery_level
         self._dead = dead
         self._timestamp = timestamp
 
@@ -18,8 +18,8 @@ class Device:
         return self._id
 
     @id.setter
-    def id(self, id):
-        self._id = id
+    def id(self, _id):
+        self._id = _id
 
     @property
     def name(self):
@@ -34,24 +34,24 @@ class Device:
         return self._roomID
 
     @roomID.setter
-    def roomID(self, roomID):
-        self._roomID = roomID
+    def roomID(self, room_id):
+        self._roomID = room_id
 
     @property
     def type(self):
         return self._type
 
     @type.setter
-    def type(self, type):
-        self._type = type
+    def type(self, _type):
+        self._type = _type
 
     @property
     def baseType(self):
         return self._baseType
 
     @baseType.setter
-    def baseType(self, baseType):
-        self._baseType = baseType
+    def baseType(self, base_type):
+        self._baseType = base_type
 
     @property
     def value(self):
@@ -66,8 +66,8 @@ class Device:
         return self._batteryLevel
 
     @batteryLevel.setter
-    def batteryLevel(self, batteryLevel):
-        self._batteryLevel = batteryLevel
+    def batteryLevel(self, battery_level):
+        self._batteryLevel = battery_level
 
     @property
     def dead(self):
@@ -88,7 +88,7 @@ class Device:
     def serialize(self):
         return json.dumps(self.__dict__, indent=4, ensure_ascii=False)
 
-    def unserialize(self, dict_object):    
+    def unserialize(self, dict_object):
         self.id = dict_object['id']
         self.name = dict_object['name']
         self.roomID = dict_object['roomID']
@@ -98,4 +98,3 @@ class Device:
         self.batteryLevel = dict_object['batteryLevel']
         self.dead = dict_object['dead']
         self.timestamp = dict_object['timestamp']
-

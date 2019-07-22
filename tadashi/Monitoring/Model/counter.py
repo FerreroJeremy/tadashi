@@ -2,11 +2,11 @@ import json
 
 
 class Counter:
-    def __init__(self, id=None, roomID=None, type=None, baseType=None, value=None, count=None, corrected=None):
-        self._id = id
-        self._roomID = roomID
-        self._type = type
-        self._baseType = baseType
+    def __init__(self, _id=None, room_id=None, _type=None, base_type=None, value=None, count=None, corrected=None):
+        self._id = _id
+        self._roomID = room_id
+        self._type = _type
+        self._baseType = base_type
         self._value = value
         self._count = count
         self._corrected = corrected
@@ -16,32 +16,32 @@ class Counter:
         return self._id
 
     @id.setter
-    def id(self, id):
-        self._id = id
+    def id(self, _id):
+        self._id = _id
 
     @property
     def roomID(self):
         return self._roomID
 
     @roomID.setter
-    def roomID(self, roomID):
-        self._roomID = roomID
+    def roomID(self, room_id):
+        self._roomID = room_id
 
     @property
     def type(self):
         return self._type
 
     @type.setter
-    def type(self, type):
-        self._type = type
+    def type(self, _type):
+        self._type = _type
 
     @property
     def baseType(self):
         return self._baseType
 
     @baseType.setter
-    def baseType(self, baseType):
-        self._baseType = baseType
+    def baseType(self, base_type):
+        self._baseType = base_type
 
     @property
     def value(self):
@@ -78,4 +78,3 @@ class Counter:
         self.value = dict_object['value']
         self.count = dict_object['count']
         self.corrected = dict_object['corrected']
-

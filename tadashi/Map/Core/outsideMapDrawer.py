@@ -1,11 +1,10 @@
-import svgwrite
 from .mapDrawer import MapDrawer
 
 
 class OutsideMapDrawer(MapDrawer):
 
     def draw_room_wall(self, handle):
-        handle.add(handle.rect((70, 154), ("89px", "54px"), stroke_width = "2", stroke = "black", fill = "white"))
+        handle.add(handle.rect((70, 154), ("89px", "54px"), stroke_width="2", stroke="black", fill="white"))
         return handle
 
     def draw_motion_sensor(self, handle):

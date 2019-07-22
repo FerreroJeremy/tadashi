@@ -18,7 +18,7 @@ class Context(Enum):
 
 class TadashiHistory(History):
     def __init__(self, timestamp=None, context=None, logs=None):
-        super().__init__()
+        super().__init__(timestamp, logs)
         self._context = context
 
     @property
@@ -29,7 +29,7 @@ class TadashiHistory(History):
     def context(self, context):
         if isinstance(context, str):
             context = Context[context]
-        
+
         if not isinstance(context, Context):
             raise BadArgumentTypeException('context must be an instance of Context Enum')
         self._context = context
@@ -43,7 +43,7 @@ class TadashiHistory(History):
             outfile.write('\t"logs" : [\n')
             for log in self._logs:
                 serialized_object = log.serialize()
-                serialized_object = serialized_object.replace('_','')
+                serialized_object = serialized_object.replace('_', '')
                 outfile.write(serialized_object)
                 outfile.write(',\n')
             outfile.seek(outfile.tell() - 2, os.SEEK_SET)
@@ -57,8 +57,7 @@ class TadashiHistory(History):
             self.timestamp = history['timestamp']
             if 'context' in history:
                 self.context = history['context']
-            for oject in history['logs']:
+            for _oject in history['logs']:
                 log = Room()
-                log.unserialize(oject)
+                log.unserialize(_oject)
                 self.add_log(log)
-

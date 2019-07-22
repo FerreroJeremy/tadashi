@@ -1,11 +1,10 @@
-import svgwrite
 from .mapDrawer import MapDrawer
 
 
 class BedroomMapDrawer(MapDrawer):
 
     def draw_room_wall(self, handle):
-        handle.add(handle.rect((168, 10), ("78px", "144px"), stroke_width = "2", stroke = "black", fill = "white"))
+        handle.add(handle.rect((168, 10), ("78px", "144px"), stroke_width="2", stroke="black", fill="white"))
         return handle
 
     def draw_door_sensor(self, handle):

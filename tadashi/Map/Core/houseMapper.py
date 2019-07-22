@@ -10,7 +10,7 @@ from .outsideMapDrawer import OutsideMapDrawer
 
 
 class HouseMapper:
-    def __init__(self, city, history_manager):
+    def __init__(self, city):
         self._absolute_path = os.path.abspath(os.path.dirname(__file__))
         self._city = city
         self._tadashi_history = TadashiHistory()
@@ -42,21 +42,20 @@ class HouseMapper:
         if not output_path:
             output_path = self._absolute_path + '/../../assets/map/test_svg.svg'
         handle = svgwrite.Drawing(output_path, size=("256px", "256px"))
-        
+
         if self._outside_map_drawer is not None:
             handle = self._outside_map_drawer.draw(handle)
-        
+
         if self._lounge_map_drawer is not None:
             handle = self._lounge_map_drawer.draw(handle)
             handle = self._lounge_map_drawer.draw_date(handle)
             if self._context is not None and self._context is not Context.UNKNOWN:
                 handle = self._lounge_map_drawer.draw_context(handle, self._context.value)
-        
+
         if self._bedroom_map_drawer is not None:
             handle = self._bedroom_map_drawer.draw(handle)
-        
+
         if self._bathroom_map_drawer is not None:
             handle = self._bathroom_map_drawer.draw(handle)
-        
-        handle.save()
 
+        handle.save()
