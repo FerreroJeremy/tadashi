@@ -188,15 +188,20 @@ The classes imported from the Python Standard Library do not appear in the diagr
 
 The list of the current dependencies can be found in the `requirements.txt` file, and is also available below.
 
-- matplotlib 3.1.0
-- pytz 2018.9
-- pandas 0.24.2
-- astral 1.10.1
-- numpy 1.16.4
-- requests 2.21.0
-- svgwrite 1.2.1
+- svgwrite 1.3.1
 - seaborn 0.9.0
-- fontawesome 5.7.2.post1
+- tensorflow 1.14.0
+- pandas 0.24.2
+- requests 2.21.0
+- pytz 2018.9
+- Keras 2.2.4
+- numpy 1.16.4
+- fontawesome 5.7.2
+- CairoSVG 2.4.0
+- astral 1.10.1
+- matplotlib 3.1.1
+- opencv_python 4.1.0.25
+- scikit_learn 0.21.2
 - PyYAML 5.1.1
 
 
