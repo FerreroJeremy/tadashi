@@ -34,13 +34,12 @@ class FibaroApiWrapper:
             raise FibaroApiConnectionException('Api responds code ' + str(status_code) + ' when attempt to get ' + str(_object))
 
     def post(self, _id, value):
-        if isinstance(value, bool):
-            if value is True:
-                value = 'turnOn'
-
-            if value is False:
-                value = 'turnOff'
-
+        if value in [True, 'true', '1']:
+            value = 'turnOn'
+            params = {'deviceID': _id, 'name': value}
+            r = requests.get('http://' + str(self._ip) + '/api/callAction', params=params, auth=(str(self._user), str(self._password)))
+        elif value in [False, 'false', '0']:
+            value = 'turnOff'
             params = {'deviceID': _id, 'name': value}
             r = requests.get('http://' + str(self._ip) + '/api/callAction', params=params, auth=(str(self._user), str(self._password)))
         else:
