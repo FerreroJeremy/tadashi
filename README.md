@@ -77,7 +77,8 @@ After, mapdrawing classes knowing the location of walls and sensors build a 256x
 To charm you, I put below an example of generated map from sensor states:
 <p align="center"><img width="300px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/map.png"></p>
 
-You can see in the lower left corner a future feature, the context.
+In the lower right corner, you can see (from left to right): the day of the week, the hour, whether it is day or night (here it is night), and the season (here it is winter). 
+You can also see in the lower left corner a future feature, the context.
 The context will be the activity do by the customer or the meta-state of the home, e.g. travelling, cooking, sleeping... and it will be useful to supply an additional information to the neural network.
 For now, the default context is set to `UNKNOWN` and does not appear on the map.
 
@@ -188,19 +189,18 @@ The classes imported from the Python Standard Library do not appear in the diagr
 
 The list of the current dependencies can be found in the `requirements.txt` file, and is also available below.
 
-- svgwrite 1.3.1
-- seaborn 0.9.0
-- tensorflow 1.14.0
-- pandas 0.24.2
-- requests 2.21.0
-- pytz 2018.9
 - Keras 2.2.4
-- numpy 1.16.4
-- fontawesome 5.7.2
+- opencv_python 4.1.0.25
 - CairoSVG 2.4.0
 - astral 1.10.1
+- numpy 1.16.4
+- fontawesome 5.7.2
+- pandas 0.24.2
+- svgwrite 1.3.1
+- requests 2.21.0
 - matplotlib 3.1.1
-- opencv_python 4.1.0.25
+- tensorflow 1.14.0
+- pytz 2018.9
 - scikit_learn 0.21.2
 - PyYAML 5.1.1
 

@@ -4,6 +4,8 @@ import pytz
 from astral import Astral
 from ...Fibaro.Model.room import OpeningState
 from ...Fibaro.Model.room import MonoxideState
+from ...utils.helper import get_season
+from ...utils.helper import get_day_of_week
 
 
 class MapDrawer:
@@ -37,16 +39,26 @@ class MapDrawer:
             handle = self.draw_shutter_sensor(handle)
         return handle
 
-    def draw_date(self, handle, x=178, y=246, size='15', color='black'):
-        date = datetime.datetime.now().strftime('%H:%M:%S')
+    def draw_date(self, handle, x=90, y=246, size='15', color='black'):
+        hour = datetime.datetime.now().strftime('%H:%M:%S')
+        day_of_week = get_day_of_week()
+        season = get_season()
+
+        season_icon = fa.icons["snowflake"]
+        if season == 'spring':
+            season_icon = fa.icons["yelp"]
+        elif season == 'summer':
+            season_icon = fa.icons["sun"]
+        elif season == 'fall':
+            season_icon = fa.icons["envira"]
+
         utc = pytz.UTC
-        icon = fa.icons["moon"]
         sun = self._astral.sun(date=datetime.datetime.now(), local=True)
-
+        sun_icon = fa.icons["moon"]
         if sun['sunrise'].replace(tzinfo=utc) < datetime.datetime.now().replace(tzinfo=utc) < sun['sunset'].replace(tzinfo=utc):
-            icon = fa.icons["sun"]
+            sun_icon = fa.icons["sun"]
 
-        text = date + "  " + icon
+        text = day_of_week + '  ' + hour + '  ' + sun_icon + '  ' + season_icon
         handle = self.draw_text(handle, text, x, y, size, color)
         return handle
 
@@ -131,3 +143,7 @@ class MapDrawer:
     def draw_door(self, handle, x1, y1, x2, y2, width="2", color="white"):
         handle.add(handle.line((x1, y1), (x2, y2), stroke_width=width, stroke=color))
         return handle
+
+    def print_all_fontawesome(self):
+        for icon in fa.icons:
+            print(icon + '    ' + fa.icons[icon])
