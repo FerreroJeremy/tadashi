@@ -152,7 +152,7 @@ So, you will have to make some changes to make Tadashi work with your home.
     1. **Change a room**
 You will have to redefine the walls and the sensor locations.
 For this, you will have to directly modify the methods called in `*MapDrawer` classes.
-For exemple, if you want to redefine the bathroom, you must play with the `BathroomMapDrawer` class.
+For example, if you want to redefine the bathroom, you must play with the `BathroomMapDrawer` class.
 Change the `(x, y)` tuple and the `width` and the `height` of the figure in the `draw_room_wall` method to change size and location of the walls.
 Look at the <a rel="svgwrite" href="https://svgwrite.readthedocs.io/en/master/">svgwrite documentation</a> to learn how manipulate native svgwrite methods like `Rect` or `Line`.
 For the sensors is easier, just change the `x` and `y` parameters of `draw_*_icon` methods in `draw_*_sensor` methods to change the location of the corresponding sensor.
