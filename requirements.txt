@@ -8,7 +8,7 @@ pandas==0.24.2
 svgwrite==1.3.1
 requests==2.21.0
 matplotlib==3.1.1
-tensorflow==1.14.0
+tensorflow==1.15.2
 pytz==2018.9
 scikit_learn==0.21.2
 PyYAML==5.1.1
