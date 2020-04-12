@@ -1,0 +1,8 @@
+fibaro_api:
+  ip : "192.168.1.54"
+  user : "your_user_name"
+  password : "your_password"
+neural_network:
+  classification_type : "multi-label"
+  decision_threshold : 0.80
+

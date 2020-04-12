@@ -94,22 +94,25 @@ class Tadashi:
             return
 
         keras = Keras()
-        label = keras.classify(input_model_path, input_label_bin_path, img_to_labalize)
+        labels = keras.classify(input_model_path, input_label_bin_path, img_to_labalize)
 
-        if label == 'NOTHING_TO_DO':
-            return
+        print('Execution')
+        for label in labels:
+            if label != 'NOTHING_TO_DO':
+                device_to_activate = label.split('#')
+                print("\t --> device #" + device_to_activate[0] + ": " + device_to_activate[1])
+                self.apply_action_on_device(device_to_activate[0], device_to_activate[1])
 
-        device_to_activate = label.split('#')
-
-        with open(self._absolute_path + '/Fibaro/config/api_config.yaml', 'r') as stream:
+    def apply_action_on_device(self, device_to_activate, state):
+        with open(self._absolute_path + '/config/config.yaml', 'r') as stream:
             try:
-                auth_configs = yaml.safe_load(stream)['fibaro']
+                auth_configs = yaml.safe_load(stream)['fibaro_api']
             except yaml.YAMLError as e:
                 raise e
 
         api_wrapper = FibaroApiWrapper()
         api_wrapper.connect(auth_configs['ip'], auth_configs['user'], auth_configs['password'])
-        api_wrapper.post(device_to_activate[0], device_to_activate[1])
+        api_wrapper.post(device_to_activate, state)
 
     def delete_tmp_files(self):
         print('Cleaning!')

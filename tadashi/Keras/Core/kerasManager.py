@@ -15,7 +15,7 @@ import cairosvg
 import random
 import tensorflow as tf
 import datetime
-import sys
+import yaml
 
 
 class KerasManager:
@@ -30,6 +30,12 @@ class KerasManager:
         self._input_dataset_path = self._absolute_path + '/../../assets/map'
         self._input_linked_label_path = self._absolute_path + '/../../assets/model/link.dat'
         self._output_graph_path = self._absolute_path + '/../../assets/monitoring/training.png'
+
+        with open(self._absolute_path + '/../../config/config.yaml', 'r') as stream:
+            try:
+                self._configs = yaml.safe_load(stream)['neural_network']
+            except yaml.YAMLError as e:
+                raise e
 
     def train(self, output_model_path, output_label_bin_path, input_dataset_path=None, input_linked_label_path=None):
         if input_dataset_path is not None:
@@ -112,7 +118,7 @@ class KerasManager:
 
         # construct the image generator for data augmentation
         aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1, height_shift_range=0.1, shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode="nearest")
-        h = model.fit_generator(aug.flow(trainX, trainY, batch_size=self.BS), validation_data=(testX, testY), steps_per_epoch=len(trainX) // self.BS, epochs=self.EPOCHS, verbose=0)
+        h = model.fit_generator(aug.flow(trainX, trainY, batch_size=self.BS), validation_data=(testX, testY), steps_per_epoch=len(trainX) // self.BS, epochs=self.EPOCHS, verbose=1)
 
         end = datetime.datetime.now().replace(microsecond=0)
 
@@ -134,11 +140,10 @@ class KerasManager:
 
         plt.style.use("ggplot")
         plt.figure()
-        n = self.EPOCHS
-        plt.plot(np.arange(0, n), h.history["loss"], label="train_loss")
-        plt.plot(np.arange(0, n), h.history["val_loss"], label="val_loss")
-        plt.plot(np.arange(0, n), h.history["acc"], label="train_acc")
-        plt.plot(np.arange(0, n), h.history["val_acc"], label="val_acc")
+        plt.plot(np.arange(0, self.EPOCHS), h.history["loss"], label="train_loss")
+        plt.plot(np.arange(0, self.EPOCHS), h.history["val_loss"], label="val_loss")
+        plt.plot(np.arange(0, self.EPOCHS), h.history["acc"], label="train_acc")
+        plt.plot(np.arange(0, self.EPOCHS), h.history["val_acc"], label="val_acc")
         plt.title("Training Loss and Accuracy")
         plt.xlabel("Epoch #")
         plt.ylabel("Loss/Accuracy")
@@ -172,9 +177,15 @@ class KerasManager:
         print("Classifying image...")
 
         proba = model.predict(image)[0]
-        idxs = np.argsort(proba)[::-1][:2]  # for future feature (multi label classification), we keep two labels
+        idxs = np.argsort(proba)[::-1][:2]  # we keep only two first labels, the most likely classes
 
+        print(self._configs['decision_threshold'])
+
+        print('Predictions')
+        results = []
         for (i, j) in enumerate(idxs):
-            # just print and return the first, the most likely class/label
             print("\t --> {}: {:.2f}%".format(mlb.classes_[j], proba[j] * 100))
-            return mlb.classes_[j]
+            if (proba[j]) >= self._configs['decision_threshold']:
+                results.append(mlb.classes_[j])
+
+        return results

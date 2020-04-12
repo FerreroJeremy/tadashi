@@ -15,10 +15,12 @@ class MonoxideState(Enum):
 
 
 class Place(Enum):
-    LOUNGE = 1
-    BEDROOM = 2
-    BATHROOM = 3
-    OUTSIDE = 4
+    KITCHEN = 3
+    HALL = 4
+    BEDROOM = 5
+    BATHROOM = 6
+    LOUNGE = 7
+    OUTSIDE = 8
 
 
 class Room:

@@ -46,9 +46,9 @@ class FibaroSnapshotManager:
 
         self._tadashi_history.context = Context.UNKNOWN  # feature not implemented yet
 
-        with open(self._absolute_path + '/../config/api_config.yaml', 'r') as stream:
+        with open(self._absolute_path + '/../../config/config.yaml', 'r') as stream:
             try:
-                auth_configs = yaml.safe_load(stream)['fibaro']
+                auth_configs = yaml.safe_load(stream)['fibaro_api']
             except yaml.YAMLError as e:
                 raise e
 
