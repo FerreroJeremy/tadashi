@@ -49,6 +49,7 @@ class HouseMapper:
         if self._lounge_map_drawer is not None:
             handle = self._lounge_map_drawer.draw(handle)
             handle = self._lounge_map_drawer.draw_date(handle)
+
             if self._context is not None and self._context is not Context.UNKNOWN:
                 handle = self._lounge_map_drawer.draw_context(handle, self._context.value)
 

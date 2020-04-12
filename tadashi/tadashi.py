@@ -12,13 +12,22 @@ from .utils.periodicallyProcessor import PeriodicallyProcessor
 class Tadashi:
     DEBUG = False
 
-    _city = ''
+    _city = None
+    _context = None
 
-    def __init__(self):
+    def __init__(self, city=None, context=None):
+        if city:
+            self._city = city
+        if context:
+            self._context = context
+
         self._absolute_path = os.path.abspath(os.path.dirname(__file__))
 
-    def process(self, city):
+    def process(self, city, context=None):
         self._city = city
+        if context:
+            self._context = context
+
         pp = PeriodicallyProcessor()
         callback = self.compute
         pp.process(callback)
@@ -45,6 +54,7 @@ class Tadashi:
         t_path = self._absolute_path + '/assets/tmp/' + str(timestamp) + '_t.json'
 
         fsm = FibaroSnapshotManager()
+        fsm.set_context(self._context)
         fsm.get_snapshot()
         fsm.parse()
         fsm.save_fibaro_snapshot(f_path)

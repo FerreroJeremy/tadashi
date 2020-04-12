@@ -5,4 +5,5 @@ fibaro_api:
 neural_network:
   classification_type : "multi-label"
   decision_threshold : 0.80
+default_context : "UNKNOWN"
 

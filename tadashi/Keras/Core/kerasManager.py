@@ -179,8 +179,6 @@ class KerasManager:
         proba = model.predict(image)[0]
         idxs = np.argsort(proba)[::-1][:2]  # we keep only two first labels, the most likely classes
 
-        print(self._configs['decision_threshold'])
-
         print('Predictions')
         results = []
         for (i, j) in enumerate(idxs):

@@ -39,22 +39,30 @@ class FibaroSnapshotManager:
         self._tadashi_history = TadashiHistory()
         self._room_logs = {}
         self._response = ''
+        self._context = None
+
+    def set_context(self, context):
+        self._context = context
 
     def get_snapshot(self):
         for name, member in Place.__members__.items():
             self._room_logs[name] = Room(member)
 
-        self._tadashi_history.context = Context.UNKNOWN  # feature not implemented yet
-
         with open(self._absolute_path + '/../../config/config.yaml', 'r') as stream:
             try:
-                auth_configs = yaml.safe_load(stream)['fibaro_api']
+                configs = yaml.safe_load(stream)
             except yaml.YAMLError as e:
                 raise e
 
+        auth_configs = configs['fibaro_api']
         api_wrapper = FibaroApiWrapper()
         api_wrapper.connect(auth_configs['ip'], auth_configs['user'], auth_configs['password'])
         self._response = api_wrapper.get('devices')
+
+        if self._context:
+            self._tadashi_history.context = self._context
+        else:
+            self._tadashi_history.context = Context[configs['default_context']]
 
     def parse(self):
         devices = json.loads(self._response)

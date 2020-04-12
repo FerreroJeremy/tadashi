@@ -2,7 +2,7 @@
 all: launch
 
 launch:
-	python3 -m main
+	python3 -m main -l Paris
 
 learn:
 	python3 tadashi/train_network.py

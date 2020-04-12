@@ -80,6 +80,7 @@ To charm you, I put below an example of generated map from sensor states:
 In the lower right corner, you can see (from left to right): the day of the week, the hour, whether it is day or night (here it is night), and the season (here it is winter). 
 You can also see in the lower left corner a future feature, the context.
 The context will be the activity do by the customer or the meta-state of the home, e.g. travelling, cooking, sleeping... and it will be useful to supply an additional information to the neural network.
+The context can be passed in argument to the main script or can be setted in the config yaml file.
 For now, the default context is set to `UNKNOWN` and does not appear on the map.
 
 #### Linker
@@ -142,8 +143,7 @@ I invite you to take a look in `LockManager` too.
 Tadashi uses the <a rel="astral" href="https://astral.readthedocs.io/en/latest/">Astral</a> library to know the time of sunrise and sunset of your location.
 It uses it to make appear on the map if it is day or night.
 This allows to supply additional information to the neural network.
-By default, the city is Paris (the city supported by `Astral` closest to my actual location).
-You can change it in `tadashi.py`.
+By default, in the makefile, the city in args is Paris (the city supported by `Astral` closest to my actual location).
 
 2. **Change the Map generation**
 There is a good chance that your house is not architecturally identical to mine.
