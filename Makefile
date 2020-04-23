@@ -4,8 +4,11 @@ all: launch
 launch:
 	python3 -m main -l Paris
 
+overwatch:
+	python3 tadashi/Monitoring/View/monitoringGui.py
+
 learn:
-	python3 tadashi/train_network.py
+	python3 -m tadashi.train_network.py
 
 clean:
 	find . -type f -name '*.json' -delete
@@ -26,3 +29,6 @@ test:
 
 lint:
 	pep8 .
+
+require:
+	pipreqs . --force

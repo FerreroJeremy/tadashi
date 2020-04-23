@@ -1,6 +1,5 @@
 import os
 import json
-import yaml
 from enum import Enum
 from ..Api.fibaroApiWrapper import FibaroApiWrapper
 from ..Model.device import Device
@@ -9,7 +8,7 @@ from ..Model.room import MonoxideState
 from ..Model.room import Place
 from ..Model.history import History
 from ..Model.tadashiHistory import TadashiHistory
-from ..Model.tadashiHistory import Context
+from ...Config.Core.configManager import ConfigManager
 
 
 class Sensor(Enum):
@@ -48,13 +47,7 @@ class FibaroSnapshotManager:
         for name, member in Place.__members__.items():
             self._room_logs[name] = Room(member)
 
-        with open(self._absolute_path + '/../../config/config.yaml', 'r') as stream:
-            try:
-                configs = yaml.safe_load(stream)
-            except yaml.YAMLError as e:
-                raise e
-
-        auth_configs = configs['fibaro_api']
+        auth_configs = ConfigManager.get_instance().get('fibaro_api')
         api_wrapper = FibaroApiWrapper()
         api_wrapper.connect(auth_configs['ip'], auth_configs['user'], auth_configs['password'])
         self._response = api_wrapper.get('devices')
@@ -62,7 +55,7 @@ class FibaroSnapshotManager:
         if self._context:
             self._tadashi_history.context = self._context
         else:
-            self._tadashi_history.context = Context[configs['default_context']]
+            self._tadashi_history.context = ConfigManager.get_instance().get('default_context')
 
     def parse(self):
         devices = json.loads(self._response)

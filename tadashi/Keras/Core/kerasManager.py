@@ -1,21 +1,23 @@
-from .convolutionalNetwork import ConvolutionalNetwork
-from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import Adam
-from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib
-from keras.preprocessing.image import img_to_array
-from keras.models import load_model
 import numpy as np
 import pickle
 import cv2
 import os
 import cairosvg
 import random
-import tensorflow as tf
 import datetime
-import yaml
+import tensorflow as tf
+
+from keras.optimizers import Adam
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import ImageDataGenerator
+from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.model_selection import train_test_split
+
+from ...Config.Core.configManager import ConfigManager
+from .convolutionalNetwork import ConvolutionalNetwork
 
 
 class KerasManager:
@@ -31,11 +33,7 @@ class KerasManager:
         self._input_linked_label_path = self._absolute_path + '/../../assets/model/link.dat'
         self._output_graph_path = self._absolute_path + '/../../assets/monitoring/training.png'
 
-        with open(self._absolute_path + '/../../config/config.yaml', 'r') as stream:
-            try:
-                self._configs = yaml.safe_load(stream)['neural_network']
-            except yaml.YAMLError as e:
-                raise e
+        self._configs = ConfigManager.get_instance().get('neural_network')
 
     def train(self, output_model_path, output_label_bin_path, input_dataset_path=None, input_linked_label_path=None):
         if input_dataset_path is not None:

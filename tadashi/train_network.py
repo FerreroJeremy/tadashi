@@ -1,9 +1,9 @@
 import os
 import datetime
-from utils.lockManager import LockState
-from utils.lockManager import LockManager
-from utils.periodicallyProcessor import PeriodicallyProcessor
-from Keras.Core.kerasManager import KerasManager as Keras
+from .utils.lockManager import LockState
+from .utils.lockManager import LockManager
+from .utils.periodicallyProcessor import PeriodicallyProcessor
+from .Keras.Core.kerasManager import KerasManager as Keras
 
 absolute_path = os.path.abspath(os.path.dirname(__file__))
 output_model_path = absolute_path + '/assets/model/model.bin'
@@ -22,7 +22,3 @@ def compute(timestamp):
 pp = PeriodicallyProcessor()
 callback = compute
 pp.process(callback)
-
-
-
-
