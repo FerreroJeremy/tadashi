@@ -115,7 +115,7 @@ class MapDrawer:
             elif temperature < 18:
                 color = 'blue'
                 icon = 'thermometer-empty'
-            elif temperature < 21:
+            elif temperature <= 21:
                 color = 'orange'
                 icon = 'thermometer-half'
             else:

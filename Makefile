@@ -5,7 +5,7 @@ launch:
 	python3 -m main -l Paris
 
 overwatch:
-	python3 tadashi/Monitoring/View/monitoringGui.py
+	python3 -m tadashi.Monitoring.View.monitoringGui.py
 
 learn:
 	python3 -m tadashi.train_network.py
