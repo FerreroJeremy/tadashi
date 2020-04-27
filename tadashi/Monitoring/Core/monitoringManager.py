@@ -47,9 +47,7 @@ class MonitoringManager:
                     and Sensor.WALL_PLUG.value in device.type \
                     and Sensor.DIMMER.value in device.type \
                     and Sensor.SWITCH.value in device.type \
-                    and Sensor.CONTROLLER.value in device.type \
-                    and Sensor.ROLLER.value in device.type \
-                    and Sensor.WALLI.value in device.type:
+                    and Sensor.ROLLER.value in device.type:
                 if Sensor.LIGHT.value in device.type:
                     if float(device.value) > 1:
                         device.value = True

@@ -2,18 +2,21 @@ import os
 import glob
 import ntpath
 import cairosvg
-from PIL import Image as imag
 import time
+import fontawesome as fa
+
+from PIL import Image as imag
 from tkinter import *
 from ...utils.helper import get_date_from_timestamp
 from ..Model.monitoring import Monitoring
+from ...Fibaro.Model.history import History
 
 
 class MonitoringGui:
     def __init__(self):
         self._absolute_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
         self._asset_path = self._absolute_path + "/assets"
-        self._window = gui
+        self._window = window
         self._window.title('Tadashi Monitoring')
         self.init_window()
 
@@ -32,12 +35,14 @@ class MonitoringGui:
         map_frame = self.draw_map_area(left_panel, monitoring)
         training_frame = self.draw_training_area(left_panel, monitoring)
         monitoring_frame = self.draw_monitoring_area(self._window, monitoring)
+        alerting_frame = self.draw_alerting_area(self._window, monitoring)
 
         left_panel.add(map_frame)
         left_panel.add(training_frame)
 
         main_panel.add(left_panel)
         main_panel.add(monitoring_frame)
+        main_panel.add(alerting_frame)
 
         self.draw_exit_button()
         self.draw_refresh_button()
@@ -138,6 +143,43 @@ class MonitoringGui:
 
         return monitoring_frame
 
+    def draw_alerting_area(self, frame, monitoring):
+        alerting_frame = LabelFrame(frame, text="Alerting", font=12, borderwidth=3)
+        alerting_frame.pack(pady=5, padx=5)
+
+        map_filename = self.get_last_generated_map()
+        timestamp = os.path.splitext(ntpath.basename(map_filename))[0]
+        path = self._asset_path + "/tmp/" + timestamp + "_f.json"
+        devices = self.load_devices(path)
+
+        for device in devices:
+            if int(device.batteryLevel) >= 90:
+                battery_level = 'battery-full'
+                color = 'black'
+            elif int(device.batteryLevel) >= 70:
+                battery_level = 'battery-three-quarters'
+                color = 'black'
+            elif int(device.batteryLevel) > 45:
+                battery_level = 'battery-half'
+                color = 'black'
+            elif int(device.batteryLevel) > 15:
+                battery_level = 'battery-quarter'
+                color = 'orange'
+            else:
+                battery_level = 'battery-empty'
+                color = 'red'
+            label = Label(alerting_frame, fg=color, text='room ' + str(device.roomID) + ' # ' + device.name + ' ' + fa.icons[battery_level] + ' ' + str(device.batteryLevel) + '%')
+            label.pack(side=TOP)
+
+        return alerting_frame
+
+    def load_devices(self, path=None):
+        if not path:
+            path = self._absolute_path + '/../../assets/tmp/fibaro_snapshot.json'
+        devices = History()
+        devices.load(path)
+        return devices.logs
+
     def load_metrology(self):
         path = self._asset_path + "/monitoring/monitoring.json"
         monitoring = Monitoring()
@@ -145,7 +187,7 @@ class MonitoringGui:
         return monitoring
 
     def draw_refresh_button(self):
-        exit_button = Button(self._window, text="Refresh", pady=5, padx=5, command=self.refresh)
+        exit_button = Button(self._window, text="Force refresh (auto-refresh every 20 seconds)", pady=5, padx=5, command=self.refresh)
         exit_button.pack(side=BOTTOM, fill=BOTH)
 
     def refresh(self):
@@ -168,8 +210,14 @@ class MonitoringGui:
         return png_img_path
 
 
-gui = Tk()
-MonitoringGui()
-gui.resizable(width=FALSE, height=FALSE)
-gui.mainloop()
+def clock():
+    gui.refresh()
+    window.after(20000, clock)  # run itself again after 20 seconds
+
+
+window = Tk()
+gui = MonitoringGui()
+window.resizable(width=FALSE, height=FALSE)
+clock()
+window.mainloop()
 

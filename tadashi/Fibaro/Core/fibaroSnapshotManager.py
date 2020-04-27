@@ -26,11 +26,9 @@ class Sensor(Enum):
 
     # controllers
     WALL_PLUG = 'FGWP102'
-    DIMMER = ''
-    SWITCH = ''
-    CONTROLLER = ''
-    ROLLER = ''
-    WALLI = ''
+    DIMMER = 'FGWD111'
+    SWITCH = 'FGWDS221'
+    ROLLER = 'FGWR111'
 
 
 class FibaroSnapshotManager:

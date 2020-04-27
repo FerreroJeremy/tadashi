@@ -5,10 +5,10 @@ launch:
 	python3 -m main -l Paris
 
 learn:
-	python3 -m tadashi.train_network.py
+	python3 -m tadashi.train_network
 
 overwatch:
-	python3 -m tadashi.Monitoring.View.monitoringGui.py
+	python3 -m tadashi.Monitoring.View.monitoringGui
 
 install:
 	pip3 install -r requirements.txt
