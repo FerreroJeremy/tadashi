@@ -137,6 +137,25 @@ It is performed independently by the script `train_network.py`.
 If you want to do the learning automatically, you can change this in `tadashi.py`.
 I invite you to take a look in `LockManager` too.
 
+### How to use it?
+
+1. Install all dependencies
+```
+make install
+```
+2. Launch Tadashi
+```
+make
+```
+3. In a second terminal, launch the learning script to build model
+```
+make learn
+```
+4. In a third terminal, launch the monitoring GUI (optional)
+```
+make overwatch
+```
+
 ### How adapt it to your home?
 
 1. **Change the city of your home**
