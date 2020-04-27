@@ -4,11 +4,20 @@ all: launch
 launch:
 	python3 -m main -l Paris
 
+learn:
+	python3 -m tadashi.train_network.py
+
 overwatch:
 	python3 -m tadashi.Monitoring.View.monitoringGui.py
 
-learn:
-	python3 -m tadashi.train_network.py
+install:
+	pip3 install -r requirements.txt
+
+lint:
+	pep8 .
+
+require:
+	pipreqs . --force
 
 clean:
 	find . -type f -name '*.json' -delete
@@ -26,9 +35,3 @@ test:
 	find . -type f -name '*.png' -delete
 	find . -type f -name '*.dat' -delete
 	find . -type d -name '__pycache__' -delete
-
-lint:
-	pep8 .
-
-require:
-	pipreqs . --force

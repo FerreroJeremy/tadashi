@@ -8,6 +8,7 @@ import cairosvg
 import random
 import datetime
 import tensorflow as tf
+import time
 
 from keras.optimizers import Adam
 from keras.models import load_model
@@ -16,6 +17,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.model_selection import train_test_split
 
+from ...Monitoring.Model.monitoring import Monitoring
 from ...Config.Core.configManager import ConfigManager
 from .convolutionalNetwork import ConvolutionalNetwork
 
@@ -32,8 +34,18 @@ class KerasManager:
         self._input_dataset_path = self._absolute_path + '/../../assets/map'
         self._input_linked_label_path = self._absolute_path + '/../../assets/model/link.dat'
         self._output_graph_path = self._absolute_path + '/../../assets/monitoring/training.png'
-
         self._configs = ConfigManager.get_instance().get('neural_network')
+        self._monitoring = Monitoring()
+
+    def load_metrology(self, path=None):
+        if not path:
+            path = self._absolute_path + '/../../assets/monitoring/monitoring.json'
+        self._monitoring.load(path)
+
+    def save_metrology(self, path=None):
+        if not path:
+            path = self._absolute_path + '/../../assets/monitoring/monitoring.json'
+        self._monitoring.save(path)
 
     def train(self, output_model_path, output_label_bin_path, input_dataset_path=None, input_linked_label_path=None):
         if input_dataset_path is not None:
@@ -121,12 +133,17 @@ class KerasManager:
         end = datetime.datetime.now().replace(microsecond=0)
 
         print("\t --> model builded in " + str(end - start))
+        self.load_metrology()
+        self._monitoring.model_building_time = str(end - start)
 
         print("Saving model...")
 
         model.save(output_model_path)
         statinfo = os.stat(output_model_path)
         print("\t --> model of {:.2f}MB saved".format(statinfo.st_size / (1024 * 1000.0)))
+        self._monitoring.model_size = statinfo.st_size / (1024 * 1000.0)
+        self._monitoring.last_training = time.time()
+        self.save_metrology()
 
         print("Serializing label binarizer...")
 
