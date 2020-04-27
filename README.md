@@ -156,6 +156,8 @@ make learn
 make overwatch
 ```
 
+<p align="center"><img width="800px" src="https://github.com/FerreroJeremy/tadashi/blob/master/doc/monitoring_gui.png"></p>
+
 ### How adapt it to your home?
 
 1. **Change the city of your home**
