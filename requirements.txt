@@ -8,7 +8,7 @@ requests==2.21.0
 pandas==0.24.2
 tensorflow==1.15.2
 pytz==2019.2
-CairoSVG==2.4.0
+CairoSVG==2.5.1
 astral==1.10.1
 scikit_learn==0.22.2.post1
 PyYAML==5.3.1
